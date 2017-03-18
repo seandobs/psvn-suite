@@ -1,7 +1,7 @@
 # psvn-suite
 This is a suite of tools implementing an A* planner, and the 'Stratified Sampling with Duplicate Probabilities' search tree size predictor. These tools are all based around the PSVN problem domain description language, and the PSVN API.
 
-I wrote this software to help complete the Dissertation for my BSc (Hons.) in CS  at the University of Auckland in 2016. This project is not maintained, and was not written with the intention of being of used outside of the scope of my Uni work.
+I wrote this software to help complete the Dissertation for my BSc (Hons.) in CS  at the University of Auckland in 2016. This project is not maintained, and was not written with the intention of being useful outside of the scope of my Uni work.
 
 Compile with `make`
 
