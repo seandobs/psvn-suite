@@ -14,4 +14,4 @@ The Suite:
 * `bin/randomstate` - Takes a domain.so, and a number N. Performs a random walk N steps backward from the goal state. Outputs the last state expanded.
 * `bin/abstractstate` - Takes a domain.so, a PSVN abstraction, and a state. Outputs the abstract version of that state
 * `bin/predict` - Takes a domain.so, an initial state, the parameters for SSDP, and optionally a PDB and PSVN abstraction. Outputs a prediction for the size of the search tree, if we were to run A* with duplicate detection.
-* `bin/search` - Takes a domain.so, an initial state, the parameters for SSDP, and optionally a PDB and PSVN abstraction. Runs A* starting from the initial state, searching for a solution in the domain, using the PDB as a heuristic.
+* `bin/search` - Takes a domain.so, an initial state, and optionally a PDB and PSVN abstraction. Runs A* starting from the initial state, searching for a solution in the domain, using the PDB as a heuristic.
