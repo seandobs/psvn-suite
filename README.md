@@ -1,9 +1,19 @@
 # psvn-suite
-This is a suite of tools implementing an A* planner, and the 'Stratified Sampling with Duplicate Probabilities' search tree size predictor. These tools are all based around the PSVN problem domain description language, and the PSVN API.
+This is a suite of tools implementing an A* planner, and the 'Stratified Sampling with Duplicate Probabilities' (SSDP) search tree size predictor. These tools are all based around the PSVN problem domain description language, and the PSVN API.
 
 I wrote this software to help complete the Dissertation for my BSc (Hons.) in CS  at the University of Auckland in 2016. This project is not maintained, and was not written with the intention of being useful outside of the scope of my Uni work.
 
 Compile with `make`
+Run my Dissertation experiments with `./scripts/experiment.sh`
+Plot results with `./scripts/plot.R`
+
+Documentation:
+The PSVN Domain Definition Language: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20Manual.pdf
+The PSVN C API https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20API%20Manual.pdf
+My Dissertation describing the theory behind this project, and what SSDP actually does: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/dissertation.pdf
+Presentation for my Dissertation: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/SSDP%20Presentation.pdf
+SSDD paper (SSDD is adapted by my research to create SSDP): https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Paper.pdf
+Presentation describing SSDD: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Presentation.pdf
 
 The Suite:
 * `bin/gen%DOMAIN%` - Takes domain parameters. Outputs a PSVN domain (%DOMAIN% can be 'pancake' or 'tilepuzzle')
