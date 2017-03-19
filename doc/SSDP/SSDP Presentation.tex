@@ -1,0 +1,266 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\setbeamersize{text margin left=20pt,text margin right=20pt}
+
+\begin{document}
+\title{Predicting Search Graph Size with Domain Abstractions}
+\author{Presentation by Sean Dobson}
+
+\frame{\titlepage}
+
+\begin{frame}
+  \frametitle{General Problem}
+  \begin{itemize}
+  \item The running time of a search algorithm is dependant on a number of factors:
+    \begin{itemize}
+    \item Domain, Instance, Heuristic, Representation, etc.
+    \end{itemize}
+  \item Some of these can be changed by the planner.
+  \item How do we decide on the best combination of inputs?
+  \item A method for predicting search runtime is needed.
+  \item Estimating memory usage would also be nice.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Specific Problem}
+  \begin{itemize}
+  \item Almost all of the work in this field focuses on Tree Search (IDA*)
+  \item But how do we account for the Duplicate Detection done by Graph Search? (A*)
+  \item Specifically, we want to predict the number of nodes expanded.
+    \begin{itemize}
+    \item Pruning duplicates can greatly reduce the size of the Search Graph.
+    \end{itemize}
+  \item For the moment, we will focus on predicting the size of a BFS Search Graph,
+    bounded by a \(f^*\).
+  \item Hopefully the approach will extend to Heuristic-Guided Search.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Background and Related Work}
+  \begin{itemize}
+  \item Domain Abstractions
+  \item Type Systems
+  \item KRE
+  \item Stratified Sampling
+  \item Stratified Sampling with Duplicate Detection
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Domain Abstractions}
+  \begin{itemize}
+  \item Domain Abstractions are a method of generating a state space homomorphism (an abstracted state space).
+  \item In PSVN, we define a domain abstraction as a mapping, \(\phi : L \rightarrow K\) where \(|K| \leq |L|\)
+  \item Eg. \(\phi : \{1,2,3,4\} \rightarrow \{1,2\}\):
+    \begin{equation*}
+      \phi(x) =
+      \begin{cases}
+        \ x, & \text{if } x \in \{1,2\} \\
+        \ 2, & \text{if } x \in \{3,4\}
+      \end{cases}
+    \end{equation*}
+    So if \(s = (1,1,2,3,4,2)\) then \(\phi(s) = (1,1,2,2,2,2) \).
+  \item We can apply this mapping to a PSVN problem in order to induce a state space homomorphism.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Type Systems}
+  \begin{itemize}
+  \item Given a state-space, \(S\)
+  \item And a set of types, \(T\).
+  \item We define a Type System for \(S\) as a function \(t : S \rightarrow T\)
+  \item Example Type System for the 8-Tile Puzzle based on the position of the blank:
+    $$
+    \begin{bmatrix}
+      c & s & c \\
+      s & m & s \\
+      c & s & c
+    \end{bmatrix},
+    \text{ }
+    t \left(
+    \begin{bmatrix}
+      1 & 2 & 3 \\
+      4 & 5 & 6 \\
+      7 & 8 & B
+    \end{bmatrix}
+    \right) = c
+    $$
+  \item Yields the system of recurrance relations:
+    \begin{equation*}
+    \begin{split}
+    w_{c,d} & = 2w_{s,d-1}\\
+    w_{s,d} & = 2w_{c,d-1} + 4w_{m,d-1} \\
+    w_{m,d} & = w_{s,d-1}
+    \end{split}
+    \end{equation*}
+    Where \(w_{x,d}\) is the number of nodes of type \(x\) at depth \(d\) in the search tree.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{KRE}
+  \begin{itemize}
+  \item Pre-requisite: We can compute the number of nodes at depth \(i\) of the Blind Search Tree, \(N_i(s)\),
+    via the recurrance relation given by a perfect type system (not very general).
+  \item Note that with a consistent heuristic, IDA* with threshold \(d\) will expand
+    every node \(n\) such that \(f(n) \leq d\).
+  \item Let \(P(s,i, d)\) be the percentage of nodes at depth \(i\) with \(f(n) \leq d\).
+  \item Then the number of nodes expaned at depth \(i\) by IDA* with threshold \(d\) is: \\
+    \(N_i(s) P(s,i,d)\).
+  \item \(P\) is unknown, KRE attempts to approximate it.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{KRE (cont.)}
+  \begin{itemize}
+\item Overall distribution: \(D(v) = \) The probability that a state randomly chosen from the state-space has an h-value \(\leq v\).
+  \item Calculated from the PDB that we used for \(h\).
+  \item Equillibrium distribution: \(P_{EQ}(v) = \) The probability that a node chosen randomly from the BFS Tree has h-value \(\leq v\).
+  \item Calculated from the equillibrium frequency of each type at large depths, and \(D\) for each type.
+  \item \( P(s,i, d) \approx P_{EQ}(d - i) \).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stratified Sampling}
+  \begin{itemize}
+  \item At each depth, choose nodes as \textbf{representatives} for their type.
+  \item If \((n,w) \in A[d]\), then \(n\) is the representative for \(t(n)\) at depth \(d\),
+    and we predict that there are \(w\) nodes of type \(t(n)\) at depth \(d\).
+  \item There is no other \((n',w') \in A[d]\) such that \(t(n) = t(n')\).
+  \item For a given start state, \(s\), and f-bound, \(f^*\):
+  \item Initialise \(A[0] = \{(s,1)\}\).
+  \item For each pair \((n,w) \in A[d]\).
+    \begin{itemize}
+    \item If \(f(n) \leq f^*\), expand \(n\) to get its children.
+    \item For each child \(c\), check if there is already some \((c',w') \in A[d+1]\) such that \(t(c) = t(c')\).
+      \begin{itemize}
+      \item If there isn't, update \(A[d+1] := A[d+1] \cup \{(c,w)\}\).
+      \item If there is, update \(w' := w' + w\), and with probability \(\frac{w}{w'}\) set \(c' := c\).
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stratified Sampling (cont)}
+  \begin{itemize}
+  \item Running this procedure once constitutes a single ``probe''.
+  
+  \item A probe predicts the number of nodes expanded by a Tree Search bounded by \(f^*\):
+    $$
+    \sum_{d=0}^{f^*} \sum_{(n,w) \in A[d]} w
+    $$
+
+  \item The accuracy of these predictions depends on the assumption that
+    nodes of the same type at the same depth have the same size subtree.
+    \begin{itemize}
+    \item Strong assumption, but it seems alright for homogenous spaces (branching factor is constant).
+    \item Including the h-value of a node in your type system is a good idea
+      (h-value estimates how deep the subtree will go).
+    \item In cases where it doesn't hold, we can run thousands of probes and average the results.
+    \end{itemize}
+  
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stratified Sampling with Duplicate Detection}
+  \begin{itemize}
+  \item Given a node, \(n\), and the path, \(\pi(n)\), that we used to get from \(s\) to \(n\).
+    How can we check if \(n\) is a duplicate?
+  \item If our heuristic is consistent, then the first time A* expands a node, we are guaranteed to have found the shortest path to it, and that node will never be reopened.
+  \item Then A* considers \(n\) to be a duplicate if and only if \(\pi(n)\) is not an optimal path to \(n\).
+  \item Sampling-Based Duplicate Detection (SDD): Do \(k\) random walks backwards from \(n\),
+    if any random walk intersects \(\pi(n)\) and gives a
+    shortcut, then we know \(n\) is a duplicate.
+  \item As \(k \rightarrow \infty\), SDD will determine duplicates with \(100\%\) accuracy.
+
+  \item Stratified Sampling with Duplicate Detection (SSDD): Like SS but we only expand representatives if
+    SDD doesn't detect them as duplicates.
+    
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Hypotheses and Claims}
+  \begin{itemize}
+  \item Predicting the Tile Puzzle's Search Tree Size
+  \item Predicting the Duplicate Probability Distribution
+  \item Predicting the Tile Puzzle's Search Graph Size
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Predicting the Tile Puzzle's Search Tree Size}
+  \begin{itemize}
+  \item \(H_1\): The Type System for the Tile Puzzle can be used with SS to give excellent estimations for the BFS Search Tree Size (thus minimising a cause for error that is irrelevant to my research).
+  \item When restricted to a perfect type system (i.e. one in which SS's key assumption holds),
+    the choice of representative doesn't affect the prediction.
+  \item SS acts as a bottom-up solver for the recursion.
+  \item \(H_{1,1}\): The Tile Puzzle type system only gives perfect predictions for Blind Search.
+    Heuristic search requires a type system that also accounts for h-value.
+    \begin{itemize}
+    \item Consider the case where \(t(n) = t(n')\), and \(g(n) = g(n')\), but \(h(n) << h(n')\).
+    \item A* would probably expand many more descendants of \(n\).
+    \item Perhaps a combination of type systems: \(t_h(n) = (t(n), h(n))\).
+      \item Then if \(t_{h}(s) = t_{h}(s')\), we have \(t(s) = t(s')\) and \(h(s) = h(s')\)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Predicting the Duplicate Probability Distribution}
+  \begin{itemize}
+  \item \(H_2\): We can use Domain Abstractions to predict the probability that a node of a given type,
+    and depth in the Search Tree, will be a duplicate.
+  \item We randomly generate some \(n\)-value Domain abstraction, \(a\), and apply it to our problem.
+  \item Run BFS on the abstracted problem.
+  \item Find \(P_{a}(k, d) = \frac{expanded_a(k, d)}{generated_a(k,d)} = \) the probability that a node of type \(k\), generated at depth \(d\) of the abstracted Search Graph, is a duplicate.
+  \item Predict \(P(k, d) \approx P_a(k, d \frac{f_a^*}{f^*})\), the equivalent probability for the actual problem.
+  \item \(H_{2,1}\): Increasing n will decrease the accuracy of our prediction (also decreases runtime).
+  \item \(H_{2,2}\): We can increase accuracy by aggregating over multiple abstractions (also increases runtime).
+  \end{itemize}
+\end{frame} 
+
+\begin{frame}
+  \frametitle{Predicting the Tile Puzzle's Search Graph Size}
+  \begin{itemize}
+  \item \(H_{3}\): We can extend Stratified Sampling (SS) to use the Duplicate Probability Distribution,
+    thus providing predictions for the size of the Search Graph.
+  \item SSDP: Like SS, but before we expand the representatives \((n,w) \in A[d]\),
+    we update \((n,w) := (n, w P(t(n), d))\)
+  \item \(H_{3,1}\): A more accurate estimation for the \(P\) will increase the accuracy of the SS predictions.
+  \item \(H_{3,2}\): We can also increase the accuracy by aggregating over multiple probes.
+  \item \(H_{3,3}\): We can compare this method with SSDD.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Research Plan}
+  \begin{itemize}
+  \item Literature Review: Ongoing
+  \item Implement Experiments: Ongoing
+    \begin{itemize}
+    \item Get SSDD working: Next.
+    \item Perform Levi's experiments: Week 1 of inter-semester break
+    \item Implement algorithm for predicting Duplicate Probability Distribution: Weeks 1-2 of break
+    \item Implement SSDP: Weeks 2-3 of break.
+    \item Perform Experiments: Week 1,2 of Sem 2.
+    \end{itemize}
+  \item Write Experiment Analysis: Weeks 3,4.
+  \item Write Background: Weeks 5,6.
+  \item Write Conclusion: Week 7.
+  \item Write Introduction, Abstract: Week 8.
+  \item Formatting, Reference compilation: Week 9.
+  \end{itemize}
+\end{frame}
+
+\end{document}

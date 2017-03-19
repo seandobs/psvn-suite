@@ -1,0 +1,59 @@
+This is BibTeX, Version 0.99d (TeX Live 2016/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: dissertation.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: dissertation.bib
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty journal in pearl1984heuristics
+Warning--empty journal in hernadvolgyi1999psvn
+
+Done.
+You've used 22 entries,
+            4087 wiz_defined-function locations,
+            974 strings with 12152 characters,
+and the built_in function-call counts, 17693 in all, are:
+= -- 1519
+> -- 340
+< -- 161
++ -- 193
+- -- 51
+* -- 907
+:= -- 2837
+add.period$ -- 45
+call.type$ -- 22
+change.case$ -- 22
+chr.to.int$ -- 369
+cite$ -- 24
+duplicate$ -- 1201
+empty$ -- 1352
+format.name$ -- 65
+if$ -- 4061
+int.to.chr$ -- 0
+int.to.str$ -- 22
+missing$ -- 193
+newline$ -- 133
+num.names$ -- 22
+pop$ -- 394
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 1391
+stack$ -- 0
+substring$ -- 882
+swap$ -- 1007
+text.length$ -- 38
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 22
+warning$ -- 2
+while$ -- 86
+width$ -- 24
+write$ -- 300
+(There were 2 warnings)

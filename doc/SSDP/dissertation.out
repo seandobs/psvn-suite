@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Abstract}{}% 1
+\BOOKMARK [1][-]{section.2}{Introduction}{}% 2
+\BOOKMARK [1][-]{section.3}{Related Work}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{A Primer on State Space Search}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Predicting Search Runtime}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Predicting Solution Cost}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{State Space Abstractions}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Methodology}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{Background}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{The SSDP Algorithm}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{Results and Analysis}{}% 11
+\BOOKMARK [2][-]{subsection.5.1}{Developing our Approach: Observing the Behaviour of the Abstract Searches}{section.5}% 12
+\BOOKMARK [2][-]{subsection.5.2}{Decompressing the Abstract Duplicate Probabilities}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.3}{Using the Proportion of the Space Explored as a Predictor for Duplicate Probability}{section.5}% 14
+\BOOKMARK [1][-]{section.6}{Conclusion}{}% 15
+\BOOKMARK [2][-]{subsection.6.1}{Future Research}{section.6}% 16
