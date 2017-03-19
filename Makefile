@@ -62,65 +62,80 @@ default: $(bin)/search $(bin)/pdbgen $(bin)/psvn2c $(bin)/abstractor $(bin)/tran
 # Listed in topological order
 #--------------------------------------------------------------
 
+$(bld):
+	mkdir -p $(bld)
+
+$(bin):
+	mkdir -p $(bin)
+
+$(in):
+	mkdir -p $(in)
+
+$(out):
+	mkdir -p $(out)
+
+$(in)/$(problem):
+	mkdir -p $(in)/$(problem)
+
 # Compile the object code for the PSVN shared object utility functions
-$(bld)/so_util.o: $(src)/so_util.c $(inc)/so_util.h $(inc)/psvn_game_so.h
+$(bld)/so_util.o: $(src)/so_util.c $(inc)/so_util.h $(inc)/psvn_game_so.h $(bld)
 	$(CC) $(OPT) -c $< -o $@ $(DL)
 
 # Compile the object code for the PSVN helper functions
-$(bld)/psvn.o: $(src)/psvn.cpp $(inc)/psvn.hpp
+$(bld)/psvn.o: $(src)/psvn.cpp $(inc)/psvn.hpp $(bld)
 	$(CXX) $(OPT) -c $< -o $@
 
 # Compile the 'psvn2c' API compiler
-$(bin)/psvn2c: $(src)/psvn2c.cpp $(inc)/psvn2c.hpp $(bld)/psvn.o $(inc)/psvn.hpp
+$(bin)/psvn2c: $(src)/psvn2c.cpp $(inc)/psvn2c.hpp $(bld)/psvn.o $(inc)/psvn.hpp $(bin)
 	$(CXX) $(OPT) $(src)/psvn2c.cpp $(bld)/psvn.o -o $@
 
 # Compile the abstractor
-$(bin)/abstractor: $(src)/abstractor.cpp $(inc)/psvn.hpp
+$(bin)/abstractor: $(src)/abstractor.cpp $(inc)/psvn.hpp $(bin)
 	$(CXX) $(OPT) $(src)/abstractor.cpp $(bld)/psvn.o -o $@
 
 # Compile the C++ interface for the PSVN API
-$(bld)/domain.o: $(src)/domain.cpp $(inc)/domain.hpp \
+$(bld)/domain.o: $(src)/domain.cpp $(inc)/domain.hpp $(bld) \
 		 $(inc)/state.hpp \
 		 $(inc)/psvn_game_so.h $(inc)/so_util.h
 	$(CXX) $(OPT) -c $(src)/domain.cpp -o $@
 
-$(bld)/state.o: $(src)/state.cpp $(inc)/state.hpp \
+$(bld)/state.o: $(src)/state.cpp $(inc)/state.hpp $(bld) \
 		$(inc)/domain.hpp \
 		$(inc)/psvn_game_so.h
 	$(CXX) $(OPT) -c $(src)/state.cpp -o $@
 
-$(bld)/state_map.o: $(src)/state_map.cpp $(inc)/state_map.hpp \
+$(bld)/state_map.o: $(src)/state_map.cpp $(inc)/state_map.hpp $(bld) \
 		    $(inc)/domain.hpp $(inc)/state.hpp \
 		    $(inc)/psvn_game_so.h
 	$(CXX) $(OPT) -c $(src)/state_map.cpp -o $@
 
-$(bld)/abstraction.o: $(src)/abstraction.cpp $(inc)/abstraction.hpp \
+$(bld)/abstraction.o: $(src)/abstraction.cpp $(inc)/abstraction.hpp $(bld) \
 		      $(inc)/domain.hpp $(inc)/state.hpp \
 		      $(inc)/psvn_game_so.h
 	$(CXX) $(OPT) -c $(src)/abstraction.cpp -o $@
 
-$(bld)/heuristic.o: $(src)/heuristic.cpp $(inc)/heuristic.hpp \
+$(bld)/heuristic.o: $(src)/heuristic.cpp $(inc)/heuristic.hpp $(bld) \
 	            $(inc)/domain.hpp $(inc)/state.hpp $(inc)/state_map.hpp $(inc)/abstraction.hpp
 	$(CXX) $(OPT) -c $(src)/heuristic.cpp -o $@
 
-$(bld)/searchstat.o: $(inc)/searchstat.hpp $(src)/searchstat.cpp \
+$(bld)/searchstat.o: $(inc)/searchstat.hpp $(src)/searchstat.cpp $(bld) \
 		     $(inc)/statetyper.hpp
 	$(CXX) $(OPT) -c $(src)/searchstat.cpp -o $@
 
 # Compile the Astar search algorithm
-$(bld)/astar.o: $(src)/astar.cpp $(inc)/astar.hpp \
+$(bld)/astar.o: $(src)/astar.cpp $(inc)/astar.hpp $(bld) \
 		$(inc)/state.hpp \
 		$(inc)/heuristic.hpp \
 		$(inc)/searchstat.hpp
 	$(CXX) $(OPT) -c $(src)/astar.cpp -o $@
 
-$(bld)/ss.o: $(src)/ss.cpp $(inc)/ss.hpp \
+$(bld)/ss.o: $(src)/ss.cpp $(inc)/ss.hpp $(bld) \
 		$(inc)/state.hpp \
 		$(inc)/heuristic.hpp \
 		$(inc)/searchstat.hpp
 	$(CXX) $(OPT) -c $(src)/ss.cpp -o $@
 
-$(bld)/probabilitypredictor.o: $(src)/probabilitypredictor.cpp $(inc)/probabilitypredictor.hpp \
+$(bld)/probabilitypredictor.o: $(src)/probabilitypredictor.cpp $(inc)/probabilitypredictor.hpp $(bld) \
 		$(inc)/state.hpp \
 		$(inc)/searchstat.hpp \
 		$(inc)/astar.hpp \
@@ -130,12 +145,12 @@ $(bld)/probabilitypredictor.o: $(src)/probabilitypredictor.cpp $(inc)/probabilit
 	$(CXX) $(OPT) -c $(src)/probabilitypredictor.cpp -o $@
 
 # Compile the Astar search algorithm
-$(bld)/statetyper.o: $(src)/statetyper.cpp $(inc)/statetyper.hpp \
+$(bld)/statetyper.o: $(src)/statetyper.cpp $(inc)/statetyper.hpp $(bld) \
 		$(inc)/state.hpp
 	$(CXX) $(OPT) -c $(src)/statetyper.cpp -o $@
 
 # Compile the Planner
-$(bin)/search: $(src)/search.cpp \
+$(bin)/search:  $(src)/search.cpp $(bin) \
 		$(inc)/astar.hpp $(bld)/astar.o \
 		$(inc)/state.hpp $(bld)/state.o \
 		$(inc)/domain.hpp $(bld)/domain.o \
@@ -148,7 +163,7 @@ $(bin)/search: $(src)/search.cpp \
 	$(CXX) $(OPT) $< $(bld)/astar.o $(bld)/domain.o $(bld)/state.o $(bld)/state_map.o $(bld)/abstraction.o $(bld)/heuristic.o $(bld)/searchstat.o  $(bld)/statetyper.o $(bld)/so_util.o -o $@ $(DL)
 
 # Compile the Planner
-$(bin)/abstractstate: $(src)/abstractstate.cpp \
+$(bin)/abstractstate: $(src)/abstractstate.cpp $(bin) \
 		$(inc)/state.hpp $(bld)/state.o \
 		$(inc)/domain.hpp $(bld)/domain.o \
 		$(inc)/abstraction.hpp $(bld)/abstraction.o \
@@ -156,7 +171,7 @@ $(bin)/abstractstate: $(src)/abstractstate.cpp \
 	$(CXX) $(OPT) $< $(bld)/domain.o $(bld)/state.o $(bld)/abstraction.o $(bld)/so_util.o -o $@ $(DL)
 
 # Compile the Predictor
-$(bin)/predict: $(src)/predict.cpp \
+$(bin)/predict: $(src)/predict.cpp $(bin) \
 		$(inc)/state.hpp $(bld)/state.o \
 		$(inc)/ss.hpp $(bld)/ss.o \
 		$(inc)/domain.hpp $(bld)/domain.o \
@@ -171,7 +186,7 @@ $(bin)/predict: $(src)/predict.cpp \
 	$(CXX) $(OPT) $< $(bld)/ss.o $(bld)/domain.o $(bld)/state.o $(bld)/state_map.o $(bld)/abstraction.o $(bld)/heuristic.o $(bld)/searchstat.o $(bld)/statetyper.o $(bld)/astar.o $(bld)/probabilitypredictor.o $(bld)/so_util.o -o $@ $(DL)
 
 # Compile the PDB generator
-$(bin)/pdbgen: $(src)/pdbgen.cpp \
+$(bin)/pdbgen: $(src)/pdbgen.cpp $(bin) \
 	$(inc)/state.hpp $(bld)/state.o \
 	$(inc)/abstraction.hpp $(bld)/abstraction.o \
 		  $(inc)/domain.hpp $(bld)/domain.o \
@@ -180,23 +195,22 @@ $(bin)/pdbgen: $(src)/pdbgen.cpp \
 	$(CXX) $(OPT) $< $(bld)/domain.o $(bld)/state.o $(bld)/abstraction.o $(bld)/state_map.o $(bld)/so_util.o -o $@ $(DL)
 
 #Compile the SAS2PSVN translator
-$(bin)/translator: $(src)/translator.cpp
+$(bin)/translator: $(src)/translator.cpp $(bin)
 	$(CXX) $(OPT) $< -o $@
 
 # Compile the domain generators
-$(bin)/gen%: $(src)/gen%.cpp
+$(bin)/gen%: $(src)/gen%.cpp $(bin)
 	$(CXX) $(OPT) $< -o $@
 
 # Compile the random state generator
-$(bin)/randomstate: $(src)/randomstate.cpp \
+$(bin)/randomstate: $(src)/randomstate.cpp $(bin) \
 		$(inc)/state.hpp $(bld)/state.o \
 		$(inc)/abstraction.hpp $(bld)/abstraction.o \
 		$(inc)/domain.hpp $(bld)/domain.o \
 		$(inc)/so_util.h $(bld)/so_util.o
 	$(CXX) $(OPT) $< $(bld)/domain.o $(bld)/state.o $(bld)/abstraction.o $(bld)/so_util.o -o $@ $(DL)
 
-$(in)/$(problem)/domain.psvn: $(bin)/gen$(domain)
-	mkdir -p $(in)/$(problem)
+$(in)/$(problem)/domain.psvn: $(bin)/gen$(domain) $(in)/$(problem)
 	$(bin)/gen$(domain) $(domain_arg1) $(domain_arg2) > $@
 
 # Generate an abstraction
@@ -227,12 +241,11 @@ $(in)/$(problem)/$(abs)/$(abstraction)/pdb: $(bin)/pdbgen $(in)/$(problem)/$(abs
 .FORCE:
 
 # Run Astar on $(problem) with the pdb given by $(abstraction) starting from $(start)
-$(out)/$(problem).$(start).$(abstraction).astar_out $(out)/$(problem).$(start).$(abstraction).astar_stats: $(bin)/search \
+$(out)/$(problem).$(start).$(abstraction).astar_out $(out)/$(problem).$(start).$(abstraction).astar_stats: $(bin)/search $(out) \
 $(in)/$(problem)/api.so \
 $(in)/$(problem)/$(start).state \
 $(in)/$(problem)/$(abs)/$(abstraction)/pdb \
 $(in)/$(problem)/$(abs)/$(abstraction)/domain.abst
-	mkdir -p $(out)
 	$(bin)/search \
 	--domain $(in)/$(problem)/api.so \
 	--start $(in)/$(problem)/$(start).state \
@@ -244,10 +257,9 @@ $(in)/$(problem)/$(abs)/$(abstraction)/domain.abst
 
 
 # Run BFS on $(problem) starting from $(start)
-$(out)/$(problem).$(start).bfs_out $(out)/$(problem).$(start).bfs_stats: $(bin)/search \
+$(out)/$(problem).$(start).bfs_out $(out)/$(problem).$(start).bfs_stats: $(bin)/search $(out) \
 $(in)/$(problem)/api.so \
 $(in)/$(problem)/$(start).state
-	mkdir -p $(out)
 	$(bin)/search \
 	--domain $(in)/$(problem)/api.so \
 	--start $(in)/$(problem)/$(start).state \
@@ -255,12 +267,11 @@ $(in)/$(problem)/$(start).state
 	$(dups_flag) \
 	$(goal_flag) > $@
 
-$(out)/$(problem).$(start).$(abstraction).astar_predict_out $(out)/$(problem).$(start).$(abstraction).astar_predict_stats $(out)/$(problem).$(start).$(abstraction).astar_abstract_stats: $(bin)/predict \
+$(out)/$(problem).$(start).$(abstraction).astar_predict_out $(out)/$(problem).$(start).$(abstraction).astar_predict_stats $(out)/$(problem).$(start).$(abstraction).astar_abstract_stats: $(bin)/predict $(out) \
 $(in)/$(problem)/api.so \
 $(in)/$(problem)/$(start).state \
 $(in)/$(problem)/$(abs)/$(abstraction)/pdb \
 $(in)/$(problem)/$(abs)/$(abstraction)/domain.abst
-	mkdir -p $(out)
 	$(bin)/predict \
 	--domain $(in)/$(problem)/api.so \
 	--pdb $(in)/$(problem)/$(abs)/$(abstraction)/pdb \
@@ -273,10 +284,9 @@ $(in)/$(problem)/$(abs)/$(abstraction)/domain.abst
 	--abstract-stats $(out)/$(problem).$(start).$(abstraction).astar_abstract_stats \
 	$(goal_flag) > $@
 
-$(out)/$(problem).$(start).[$(pred_seed),$(l),$(n)].bfs_predict_out $(out)/$(problem).$(start).[$(pred_seed),$(l),$(n)].bfs_predict_stats  $(out)/$(problem).$(start).[$(pred_seed),$(l),$(n)].bfs_abstract_stats: $(bin)/predict \
+$(out)/$(problem).$(start).[$(pred_seed),$(l),$(n)].bfs_predict_out $(out)/$(problem).$(start).[$(pred_seed),$(l),$(n)].bfs_predict_stats  $(out)/$(problem).$(start).[$(pred_seed),$(l),$(n)].bfs_abstract_stats: $(bin)/predict $(out) \
 $(in)/$(problem)/api.so \
 $(in)/$(problem)/$(start).state
-	mkdir -p $(out)
 	$(bin)/predict \
 	--domain $(in)/$(problem)/api.so \
 	--probes $(m) \
