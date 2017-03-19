@@ -8,12 +8,12 @@ Run my Dissertation experiments with `./scripts/experiment.sh`
 Plot results with `./scripts/plot.R`
 
 Documentation:
-The PSVN Domain Definition Language: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20Manual.pdf
-The PSVN C API https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20API%20Manual.pdf
-My Dissertation describing the theory behind this project, and what SSDP actually does: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/dissertation.pdf
-Presentation for my Dissertation: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/SSDP%20Presentation.pdf
-SSDD paper (SSDD is adapted by my research to create SSDP): https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Paper.pdf
-Presentation describing SSDD: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Presentation.pdf
+* The PSVN Domain Definition Language: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20Manual.pdf
+* The PSVN C API https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20API%20Manual.pdf
+* My Dissertation describing the theory behind this project, and what SSDP actually does: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/dissertation.pdf
+* Presentation for my Dissertation: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/SSDP%20Presentation.pdf
+* SSDD paper (SSDD is adapted by my research to create SSDP): https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Paper.pdf
+* Presentation describing SSDD: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Presentation.pdf
 
 The Suite:
 * `bin/gen%DOMAIN%` - Takes domain parameters. Outputs a PSVN domain (%DOMAIN% can be 'pancake' or 'tilepuzzle')
