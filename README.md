@@ -3,9 +3,10 @@ This is a suite of tools implementing an A* planner, and the 'Stratified Samplin
 
 I wrote this software to help complete the Dissertation for my BSc (Hons.) in CS  at the University of Auckland in 2016. This project is not maintained, and was not written with the intention of being useful outside of the scope of my Uni work.
 
-Compile with `make`
-Run my Dissertation experiments with `./scripts/experiment.sh`
-Plot results with `./scripts/plot.R`
+Usage:
+* Compile: `make`
+* Run my Dissertation experiments: `./scripts/experiment.sh`
+* Plot results: `./scripts/plot.R`
 
 Documentation:
 * The PSVN Domain Definition Language: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20Manual.pdf
