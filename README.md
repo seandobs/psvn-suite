@@ -5,7 +5,7 @@ This work was completed in service of a BSc (Hons.) Dissertation at the Universi
 
 Usage:
 * Compile: `make`
-* Run experiments: `./scripts/experiment.sh`
+* Run experiments: `./scripts/run-experiment.sh`
 * Plot results: `./scripts/plot.R`
 
 Documentation:
