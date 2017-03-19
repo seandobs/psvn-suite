@@ -225,11 +225,19 @@ $(in)/$(problem)/$(abs)/$(abstraction)/domain.psvn $(in)/$(problem)/$(abs)/$(abs
 	mkdir -p $(dir $@)
 	$(bin)/abstractor $(in)/$(problem)/domain.psvn $(in)/$(problem)/$(abs)/$(abstraction)/domain < $(in)/$(problem)/$(abs)/$(abstraction)/abs.in
 
-%/psvn_game_so.h: $(inc)/psvn_game_so.h
+$(in)/$(problem)/psvn_game_so.h: $(inc)/psvn_game_so.h
 	mkdir -p $(dir $@)
 	cp $< $@
 
-%/psvn2c_common.c: $(src)/psvn2c_common.c
+$(in)/$(problem)/psvn2c_common.c: $(src)/psvn2c_common.c
+	mkdir -p $(dir $@)
+	cp $< $@
+
+$(in)/$(problem)/$(abs)/$(abstraction)/psvn_game_so.h: $(inc)/psvn_game_so.h
+	mkdir -p $(dir $@)
+	cp $< $@
+
+$(in)/$(problem)/$(abs)/$(abstraction)/psvn2c_common.c: $(src)/psvn2c_common.c
 	mkdir -p $(dir $@)
 	cp $< $@
 
