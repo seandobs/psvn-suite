@@ -25,9 +25,9 @@ implementation of A\* and SSDP both use the PSVN C API in order to represent dom
 #### Further Reading
 * My dissertation describing the theory behind this project, and what SSDP actually does: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/dissertation.pdf
 * Presentation introducing my dissertation research: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/SSDP%20Presentation.pdf
-* The PSVN Domain Definition Language: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20Manual.pdf
-* The PSVN C API: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20API%20Manual.pdf
-* SSDD paper (Precursor to SSDP): https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Paper.pdf
+* The PSVN Domain Definition Language: https://era.library.ualberta.ca/files/7m01bn08g/TR14-03.pdf
+* The PSVN C API: http://maracaibo.ldc.usb.ve/~blai/Ibn_Sina_School/programming/psvn/Documents/psvn-API-Manual.pdf
+* SSDD paper (Precursor to SSDP): http://www.cs.du.edu/~sturtevant/papers/astar_predictions.pdf
 * Presentation describing SSDD: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Presentation.pdf
 
 #### Usage
