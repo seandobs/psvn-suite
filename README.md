@@ -23,10 +23,10 @@ language into C code. This can then be compiled into a shared object file, and d
 implementation of A\* and SSDP both use the PSVN C API in order to represent domains.
 
 #### Further Reading
+* My dissertation describing the theory behind this project, and what SSDP actually does: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/dissertation.pdf
+* Presentation introducing my dissertation research: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/SSDP%20Presentation.pdf
 * The PSVN Domain Definition Language: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20Manual.pdf
-* The PSVN C API https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20API%20Manual.pdf
-* Dissertation describing the theory behind this project, and what SSDP actually does: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/dissertation.pdf
-* Presentation describing SSDP: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/SSDP%20Presentation.pdf
+* The PSVN C API: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20API%20Manual.pdf
 * SSDD paper (Precursor to SSDP): https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Paper.pdf
 * Presentation describing SSDD: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Presentation.pdf
 
