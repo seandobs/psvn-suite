@@ -17,18 +17,23 @@ the complexity that arises from using a search algorithm that remembers what sta
 avoids re-exploring them. By solving an 'abstract' version of the problem, we estimate the relationship between the cost of getting to a state, and the probability of that state being pruned as a duplicate. With this information, along with a type system that stratifies
 the states appropriately, we can estimate the number of states A\* will explore by running a few random walks through the state-space from the initial state.
 
-#### Usage
-* Compile: `make`
-* Run experiments: `./scripts/run-experiment.sh`
-* Plot results: `./scripts/plot.R`
+#### What is PSVN?
+PSVN is essentially just a way of representing states, actions, and goal conditions. Collectively, these things are referred to as a Problem Domain, and PSVN is a Problem Domain definition language. The PSVN C API is a way of converting domains defined in this 
+language into C code. This can then be compiled into a shared object file, and dynamicaly linked with a planner at runtime. My
+implementation of A\* and SSDP both use the PSVN C API in order to represent domains.
 
-#### Documentation
+#### Further Reading
 * The PSVN Domain Definition Language: https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20Manual.pdf
 * The PSVN C API https://github.com/seandobs/psvn-suite/blob/master/doc/PSVN/PSVN%20API%20Manual.pdf
 * Dissertation describing the theory behind this project, and what SSDP actually does: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/dissertation.pdf
 * Presentation describing SSDP: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDP/SSDP%20Presentation.pdf
 * SSDD paper (Precursor to SSDP): https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Paper.pdf
 * Presentation describing SSDD: https://github.com/seandobs/psvn-suite/blob/master/doc/SSDD/SSDD%20Presentation.pdf
+
+#### Usage
+* Compile: `make`
+* Run experiments: `./scripts/run-experiment.sh`
+* Plot results: `./scripts/plot.R`
 
 #### The Suite
 * `bin/gen%DOMAIN%` - Takes domain parameters. Outputs a PSVN domain (%DOMAIN% can be 'pancake' or 'tilepuzzle')
